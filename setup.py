@@ -29,7 +29,7 @@ DEPENDENCIES = [
 ]
 
 VERSION = '1'
-URL = 'https://github.com/brain-research/lottery-ticket'
+URL = 'https://github.com/brain-research/lottery-ticket-hypothesis'
 
 setup(
     name='lottery-ticket',
@@ -65,7 +65,7 @@ setup(
 
     keywords='lottery ticket hypothesis',
 
-    packages=['lottery-ticket'],
+    packages=['lottery_ticket'],
 
     install_requires=DEPENDENCIES,
 )
