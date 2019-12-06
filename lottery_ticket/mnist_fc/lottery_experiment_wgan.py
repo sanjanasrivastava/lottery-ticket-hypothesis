@@ -21,19 +21,19 @@ from __future__ import print_function
 import functools
 from lottery_ticket.datasets import dataset_mnist
 from lottery_ticket.foundations import experiment
-from lottery_ticket.foundations import model_fc
+from lottery_ticket.foundations import model_wgan
 from lottery_ticket.foundations import paths
 from lottery_ticket.foundations import pruning
 from lottery_ticket.foundations import save_restore
-from lottery_ticket.foundations import trainer
+from lottery_ticket.foundations import trainer_wgan
 from lottery_ticket.mnist_fc import constants
 
 
 def train(output_dir,
           mnist_location=constants.MNIST_LOCATION,
           training_len=constants.TRAINING_LEN,
-          iterations=30,
-          experiment_name='same_init',
+          iterations=5, # 30,
+          experiment_name='wgan_generator',
           presets=None,
           permute_labels=False,
           train_order_seed=None):
@@ -70,7 +70,7 @@ def train(output_dir,
         permute_labels=permute_labels,
         train_order_seed=train_order_seed)
 
-  make_model = functools.partial(model_wgan.ModelWgan)
+  make_model = functools.partial(model_wgan.ModelWgan, constants.HYPERPARAMETERS)
 
   # Define a training function.
   def train_model(sess, level, dataset, model):
@@ -80,7 +80,7 @@ def train(output_dir,
         'save_network': True,
     }
 
-    return trainer.train(
+    return trainer_wgan.train(
         sess,
         dataset,
         model,

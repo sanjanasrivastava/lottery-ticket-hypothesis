@@ -55,6 +55,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
   sess.run(tf.global_variables_initializer())
   initial_weights = model.get_current_weights(sess)
 
+  print('INITIAL WEIGHTS:', initial_weights)
+
   train_handle = dataset.get_train_handle(sess)
   test_handle = dataset.get_test_handle(sess)
   validate_handle = dataset.get_validate_handle(sess)
@@ -62,7 +64,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
   # Optional operations to perform before training.
   if params.get('save_summaries', False):
     writer = tf.summary.FileWriter(paths.summaries(output_dir))
-    train_file = tf.gfile.GFile(paths.log(output_dir, 'train'), 'w')
+    D_train_file = tf.gfile.GFile(paths.log(output_dir, 'D_train'), 'w')
+    G_train_file = tf.gfile.GFile(paths.log(output_dir, 'G_train'), 'w')
     test_file = tf.gfile.GFile(paths.log(output_dir, 'test'), 'w')
     validate_file = tf.gfile.GFile(paths.log(output_dir, 'validate'), 'w')
 
@@ -137,8 +140,13 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # Train.
           #records = sess.run([optimize] + model.train_summaries,
           #                   {dataset.handle: train_handle})[1:]
+          D_records = sess.run([D_solver] + model.train_summaries,
+                               {dataset.handle: train_handle})[1:]
+          G_records = sess.run([G_solver] + model.train_summaries,
+                               {dataset.handle: train_handle})[1:]
 
-          record_summaries(iteration, records, train_file)
+          record_summaries(iteration, D_records, D_train_file)
+          record_summaries(iteration, G_records, G_train_file)
 
           # Collect test and validation data if applicable.
           collect_test_summaries(iteration)
@@ -153,7 +161,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
 
   # Clean up.
   if params.get('save_summaries', False):
-    train_file.close()
+    D_train_file.close()
+    G_train_file.close()
     test_file.close()
     validate_file.close()
 

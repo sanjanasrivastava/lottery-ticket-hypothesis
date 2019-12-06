@@ -34,4 +34,5 @@ def main(unused_argv):
   fire.Fire(download)
 
 if __name__ == '__main__':
-  main()
+  # main()
+  main(0)

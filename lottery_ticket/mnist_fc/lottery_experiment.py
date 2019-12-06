@@ -32,7 +32,7 @@ from lottery_ticket.mnist_fc import constants
 def train(output_dir,
           mnist_location=constants.MNIST_LOCATION,
           training_len=constants.TRAINING_LEN,
-          iterations=30,
+          iterations=3, # 30,
           experiment_name='same_init',
           presets=None,
           permute_labels=False,

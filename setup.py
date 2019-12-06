@@ -29,13 +29,13 @@ DEPENDENCIES = [
 ]
 
 VERSION = '1'
-URL = 'https://github.com/brain-research/lottery-ticket-hypothesis'
+# URL = 'https://github.com/brain-research/lottery-ticket-hypothesis'
 
 setup(
     name='lottery-ticket',
     version=VERSION,
     description=SHORT_DESCRIPTION,
-    url=URL,
+#     url=URL,
 
     author='Jonathan Frankle',
     author_email='jfrankle@google.com',
@@ -66,6 +66,8 @@ setup(
     keywords='lottery ticket hypothesis',
 
     packages=['lottery_ticket'],
+
+    package_dir={'lottery-ticket': '.'},
 
     install_requires=DEPENDENCIES,
 )

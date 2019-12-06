@@ -1,5 +1,5 @@
 # Copyright (C) 2018 Google Inc.
-#
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Root locations for fully-connected MNIST experiments."""
+"""Runs the lottery ticket experiment for WGAN-GP trained on MNIST."""
 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# MNIST is stored as a directory containing four npy files:
-#   x_train.npy, x_test.npy, y_train.npy, y_test.npy
-# See datasets/dataset_mnist.py for details.
+import fire
+from lottery_ticket.mnist_fc import lottery_experiment_GAN
 
-# Originally from https://s3.amazonaws.com/img-datasets/mnist.npz
-# NOTE this assumes that code is run from lottery-ticket-hypothesis/runners/
-MNIST_LOCATION = '../data/mnist'
-FASHIONMNIST_LOCATION= '../data/fashion_mnist/'
 
-EXPERIMENT_PATH = 'mnist_fc_data'
+def main(_=None):
+  fire.Fire(lottery_experiment_GAN.train)
+
+
+if __name__ == '__main__':
+  main()

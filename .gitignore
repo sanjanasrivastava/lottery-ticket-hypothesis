@@ -1,3 +1,5 @@
 *.npy
 */__pycache__/*
 *.egg-info
+output/*
+*.pyc
