@@ -71,17 +71,25 @@ class ModelWgan(model_base.ModelBase):
     G_sample = self.dense_layer('g2', G_W1, X_dim, activation=tf.nn.sigmoid,
                                 # kernel_initializer=xavier_init)
                                 kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    self.theta_G = ['g1_w', 'g1_b', 'g2_w', 'g2_b']
+    print(list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
+    # self.theta_G = ['g1_w', 'g1_b', 'g2_w', 'g2_b']
+    # self.theta_G = list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
+    self.theta_G = [tf.get_variable(name) for name in ['g1_w', 'g1_b', 'g2_w', 'g2_b']]
+    print(list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
+    crash
 
     # Create discriminator
     # D_W1 = tf.Variable(xavier_init([X_dim, h_dim]))
     # D_W1 = tf.Variable(tf.contrib.layers.xavier_initializer([X_dim, h_dim]))
-    D_W1 = tf.get_variable('D_W1', [X_dim, h_dim], tf.contrib.layers.xavier_initializer(uniform=False))
-    D_b1 = tf.Variable(tf.zeros(shape=[hdim]))
+    D_W1 = tf.get_variable('D_W1', shape=[X_dim, h_dim], initializer=tf.contrib.layers.xavier_initializer(uniform=False))
+    # D_b1 = tf.Variable(tf.zeros(shape=[h_dim]))
+    D_b1 = tf.get_variable('D_b1', shape=[h_dim], initializer=tf.zeros_initializer())
 
     # D_W2 = tf.Variable(xavier_init([h_dim, 1]))
-    D_W2 = tf.Variable(tf.contrib.layers.xavier_initializer([h_dim, 1]))
-    D_b2 = tf.Variable(tf.zeros(shape=[1]))
+    # D_W2 = tf.Variable(tf.contrib.layers.xavier_initializer([h_dim, 1]))
+    D_W2 = tf.get_variable('D_W2', shape=[h_dim, 1], initializer=tf.contrib.layers.xavier_initializer(uniform=False))
+    # D_b2 = tf.Variable(tf.zeros(shape=[1]))
+    D_b2 = tf.get_variable('D_b2', shape=[1], initializer=tf.zeros_initializer())
 
     self.theta_D = [D_W1, D_b1, D_W2, D_b2]
 
