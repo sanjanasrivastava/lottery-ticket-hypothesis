@@ -65,18 +65,16 @@ class ModelWgan(model_base.ModelBase):
       return tf.random_normal(shape=size, stddev=xavier_stddev)
 
     # Create generator
-    G_W1 = self.dense_layer('g1', z, h_dim, activation=tf.nn.relu, 
+    G_W1, g1_w, g1_b = self.dense_layer('g1', z, h_dim, activation=tf.nn.relu, 
                             # kernel_initializer=xavier_init)
                             kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    G_sample = self.dense_layer('g2', G_W1, X_dim, activation=tf.nn.sigmoid,
+    G_sample, g2_w, g2_b = self.dense_layer('g2', G_W1, X_dim, activation=tf.nn.sigmoid,
                                 # kernel_initializer=xavier_init)
                                 kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    print(list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
     # self.theta_G = ['g1_w', 'g1_b', 'g2_w', 'g2_b']
     # self.theta_G = list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
-    self.theta_G = [tf.get_variable(name) for name in ['g1_w', 'g1_b', 'g2_w', 'g2_b']]
-    print(list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
-    crash
+    # self.theta_G = [tf.get_variable(name) for name in ['g1_w', 'g1_b', 'g2_w', 'g2_b']]
+    self.theta_G = [g1_w, g1_b, g2_w, g2_b]
 
     # Create discriminator
     # D_W1 = tf.Variable(xavier_init([X_dim, h_dim]))

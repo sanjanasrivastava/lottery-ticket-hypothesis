@@ -47,6 +47,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
       training.
   """
   # Create initial session parameters.
+  print(list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
+  crash
   optimize = optimizer_fn().minimize(model.loss)
   sess.run(tf.global_variables_initializer())
   initial_weights = model.get_current_weights(sess)

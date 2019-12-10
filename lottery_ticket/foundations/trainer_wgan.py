@@ -55,8 +55,6 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
   sess.run(tf.global_variables_initializer())
   initial_weights = model.get_current_weights(sess)
 
-  print('INITIAL WEIGHTS:', initial_weights)
-
   train_handle = dataset.get_train_handle(sess)
   test_handle = dataset.get_test_handle(sess)
   validate_handle = dataset.get_validate_handle(sess)
@@ -121,6 +119,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
     iteration = 0
     epoch = 0
     while True:
+      if not epoch % 100:
+        print('epoch', epoch)
       sess.run(dataset.train_initializer)
       epoch += 1
 
@@ -131,6 +131,7 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
       # One training epoch.
       while True:
         try:
+          print('iteration', iteration)
           iteration += 1
 
           # End training if we have passed the iteration limit.
@@ -140,6 +141,7 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # Train.
           #records = sess.run([optimize] + model.train_summaries,
           #                   {dataset.handle: train_handle})[1:]
+          print(model.train_summaries)
           D_records = sess.run([D_solver] + model.train_summaries,
                                {dataset.handle: train_handle})[1:]
           G_records = sess.run([G_solver] + model.train_summaries,

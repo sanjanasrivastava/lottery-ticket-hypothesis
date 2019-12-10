@@ -98,6 +98,7 @@ class ModelBase(object):
         name=name + '_w',
         shape=[inputs.shape[1], units],
         initializer=kernel_initializer)
+    weights_out = weights
 
     # Mask the layer as necessary.
     if name in self._masks:
@@ -119,12 +120,15 @@ class ModelBase(object):
       bias = tf.get_variable(
           name=name + '_b', shape=[units], initializer=tf.zeros_initializer())
       output += bias
+      bias_out = bias
+    else:
+      bias_out = None
 
     # Activate.
     if activation:
-      return activation(output)
+      return activation(output), weights_out, bias_out
     else:
-      return output
+      return output, weights_out, bias_out
 
   def create_loss_and_accuracy(self, label_placeholder, output_logits):
     """Creates loss and accuracy once a child class has created the network."""
