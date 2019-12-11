@@ -91,7 +91,7 @@ def train(output_dir,
 
   # Define a pruning function.
   prune_masks = functools.partial(pruning.prune_by_percent,
-                                  constants.PRUNE_PERCENTS)
+                                  constants.GENERATOR_PRUNE_PERCENTS)
 
   # Run the experiment.
   experiment.experiment(

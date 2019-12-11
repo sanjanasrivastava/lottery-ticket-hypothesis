@@ -119,8 +119,6 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
     iteration = 0
     epoch = 0
     while True:
-      if not epoch % 100:
-        print('epoch', epoch)
       sess.run(dataset.train_initializer)
       epoch += 1
 
@@ -131,7 +129,6 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
       # One training epoch.
       while True:
         try:
-          print('iteration', iteration)
           iteration += 1
 
           # End training if we have passed the iteration limit.
@@ -141,18 +138,17 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # Train.
           #records = sess.run([optimize] + model.train_summaries,
           #                   {dataset.handle: train_handle})[1:]
-          print(model.train_summaries)
           D_records = sess.run([D_solver] + model.train_summaries,
                                {dataset.handle: train_handle})[1:]
           G_records = sess.run([G_solver] + model.train_summaries,
                                {dataset.handle: train_handle})[1:]
-
+ 
           record_summaries(iteration, D_records, D_train_file)
           record_summaries(iteration, G_records, G_train_file)
-
-          # Collect test and validation data if applicable.
-          collect_test_summaries(iteration)
-          collect_validate_summaries(iteration)
+# 
+#           # Collect test and validation data if applicable.
+#           collect_test_summaries(iteration)
+#           collect_validate_summaries(iteration)
 
         # End of epoch handling.
         except tf.errors.OutOfRangeError:

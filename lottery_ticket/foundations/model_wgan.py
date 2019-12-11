@@ -71,22 +71,13 @@ class ModelWgan(model_base.ModelBase):
     G_sample, g2_w, g2_b = self.dense_layer('g2', G_W1, X_dim, activation=tf.nn.sigmoid,
                                 # kernel_initializer=xavier_init)
                                 kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    # self.theta_G = ['g1_w', 'g1_b', 'g2_w', 'g2_b']
-    # self.theta_G = list(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)))
-    # self.theta_G = [tf.get_variable(name) for name in ['g1_w', 'g1_b', 'g2_w', 'g2_b']]
     self.theta_G = [g1_w, g1_b, g2_w, g2_b]
 
     # Create discriminator
-    # D_W1 = tf.Variable(xavier_init([X_dim, h_dim]))
-    # D_W1 = tf.Variable(tf.contrib.layers.xavier_initializer([X_dim, h_dim]))
     D_W1 = tf.get_variable('D_W1', shape=[X_dim, h_dim], initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    # D_b1 = tf.Variable(tf.zeros(shape=[h_dim]))
     D_b1 = tf.get_variable('D_b1', shape=[h_dim], initializer=tf.zeros_initializer())
 
-    # D_W2 = tf.Variable(xavier_init([h_dim, 1]))
-    # D_W2 = tf.Variable(tf.contrib.layers.xavier_initializer([h_dim, 1]))
     D_W2 = tf.get_variable('D_W2', shape=[h_dim, 1], initializer=tf.contrib.layers.xavier_initializer(uniform=False))
-    # D_b2 = tf.Variable(tf.zeros(shape=[1]))
     D_b2 = tf.get_variable('D_b2', shape=[1], initializer=tf.zeros_initializer())
 
     self.theta_D = [D_W1, D_b1, D_W2, D_b2]
@@ -107,7 +98,10 @@ class ModelWgan(model_base.ModelBase):
     self.D_loss = tf.reduce_mean(D_fake) - tf.reduce_mean(D_real) + grad_pen
     self.G_loss = -tf.reduce_mean(D_fake)
 
-    # TODO create generator loss
+    print(self.G_loss)
+    self.G_train_summaries = [tf.summary.scalar('G_train_loss', self.G_loss)]
+    self.D_train_summaries = [tf.summary.scalar('D_train_loss', self.D_loss)]
+
 
   def sample_z(m, n):
     return np.random.uniform(-1., 1., size=[m, n])

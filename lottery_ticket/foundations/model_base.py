@@ -44,6 +44,8 @@ class ModelBase(object):
     self._weights = {}
 
     self._train_summaries = None
+    self._G_train_summaries = None
+    self._D_train_summaries = None
     self._test_summaries = None
     self._validate_summaries = None
 
@@ -54,6 +56,14 @@ class ModelBase(object):
   @property
   def train_summaries(self):
     return self._train_summaries
+
+  @property
+  def G_train_summaries(self):
+    return self._G_train_summaries
+
+  @property
+  def D_train_summaries(self):
+    return self._D_train_summaries
 
   @property
   def test_summaries(self):
@@ -155,3 +165,4 @@ class ModelBase(object):
         tf.summary.scalar('validate_loss', self._loss),
         tf.summary.scalar('validate_accuracy', accuracy)
     ]
+

@@ -50,7 +50,7 @@ class ModelFc(model_base.ModelBase):
     # Build the network layer by layer.
     current_layer = input_placeholder
     for i, (units, activation) in enumerate(hyperparameters['layers']):
-      current_layer = self.dense_layer(
+      current_layer, __, __ = self.dense_layer(
           'layer{}'.format(i),
           current_layer,
           units,
