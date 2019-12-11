@@ -138,9 +138,9 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # Train.
           #records = sess.run([optimize] + model.train_summaries,
           #                   {dataset.handle: train_handle})[1:]
-          D_records = sess.run([D_solver] + model.train_summaries,
+          D_records = sess.run([D_solver] + model.D_train_summaries,
                                {dataset.handle: train_handle})[1:]
-          G_records = sess.run([G_solver] + model.train_summaries,
+          G_records = sess.run([G_solver] + model.G_train_summaries,
                                {dataset.handle: train_handle})[1:]
  
           record_summaries(iteration, D_records, D_train_file)

@@ -58,14 +58,6 @@ class ModelBase(object):
     return self._train_summaries
 
   @property
-  def G_train_summaries(self):
-    return self._G_train_summaries
-
-  @property
-  def D_train_summaries(self):
-    return self._D_train_summaries
-
-  @property
   def test_summaries(self):
     return self._test_summaries
 
