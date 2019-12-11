@@ -21,7 +21,7 @@ from __future__ import print_function
 from lottery_ticket.foundations import model_base
 import tensorflow as tf
 import inspect
-
+import numpy as np
 
 class ModelWgan(model_base.ModelBase):
   """A GAN with user-specifiable hyperparameters."""
@@ -49,15 +49,16 @@ class ModelWgan(model_base.ModelBase):
     super(ModelWgan, self).__init__(presets=presets, masks=masks)
 
     # Define dimensions
-    mb_size = 32
-    X_dim, z_dim, h_dim = 784, 10, 128
+    mb_size = 64
+    X_dim, h_dim = 784, 128
+    self.z_dim = 10
     lam = 10
     n_disc = 5
     self.lr = 1e-4
 
     # Variable creation
     X = input_placeholder
-    z = tf.placeholder(tf.float32, shape=[None, z_dim])
+    self.z = tf.placeholder(tf.float32, shape=[None, self.z_dim])
 
     def xavier_init(size):
       in_dim = size[0]
@@ -65,7 +66,7 @@ class ModelWgan(model_base.ModelBase):
       return tf.random_normal(shape=size, stddev=xavier_stddev)
 
     # Create generator
-    G_W1, g1_w, g1_b = self.dense_layer('g1', z, h_dim, activation=tf.nn.relu, 
+    G_W1, g1_w, g1_b = self.dense_layer('g1', self.z, h_dim, activation=tf.nn.relu, 
                             # kernel_initializer=xavier_init)
                             kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
     G_sample, g2_w, g2_b = self.dense_layer('g2', G_W1, X_dim, activation=tf.nn.sigmoid,

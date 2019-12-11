@@ -17,6 +17,7 @@
 from lottery_ticket.foundations import paths
 from lottery_ticket.foundations import save_restore
 import tensorflow as tf
+from lottery_ticket.foundations.model_wgan import ModelWgan
 
 
 def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
@@ -138,10 +139,13 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # Train.
           #records = sess.run([optimize] + model.train_summaries,
           #                   {dataset.handle: train_handle})[1:]
+          # TODO: make batch size less ridiculously designed
           D_records = sess.run([D_solver] + model.D_train_summaries,
-                               {dataset.handle: train_handle})[1:]
+                               {dataset.handle: train_handle,
+                                model.z: ModelWgan.sample_z(64, model.z_dim)})[1:]
           G_records = sess.run([G_solver] + model.G_train_summaries,
-                               {dataset.handle: train_handle})[1:]
+                               {dataset.handle: train_handle,
+                                model.z: ModelWgan.sample_z(64, model.z_dim)})[1:]
  
           record_summaries(iteration, D_records, D_train_file)
           record_summaries(iteration, G_records, G_train_file)
@@ -155,6 +159,7 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           break
 
   # Run the training loop.
+  import pdb; pdb.set_trace()
   training_loop()
 
   # Clean up.
