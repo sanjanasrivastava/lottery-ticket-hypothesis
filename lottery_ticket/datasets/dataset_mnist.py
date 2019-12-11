@@ -67,5 +67,5 @@ class DatasetMnist(dataset_base.DatasetBase):
     # Prepare the dataset.
     super(DatasetMnist, self).__init__(
         (x_train, y_train),
-        64, (x_test, y_test),
+        32, (x_test, y_test),
         train_order_seed=train_order_seed)

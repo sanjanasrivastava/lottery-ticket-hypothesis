@@ -131,6 +131,8 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
       while True:
         try:
           iteration += 1
+          if iteration == 12500:
+              import pdb; pdb.set_trace()
 
           # End training if we have passed the iteration limit.
           if training_len[0] == 'iterations' and iteration > training_len[1]:
@@ -142,10 +144,10 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           # TODO: make batch size less ridiculously designed
           D_records = sess.run([D_solver] + model.D_train_summaries,
                                {dataset.handle: train_handle,
-                                model.z: ModelWgan.sample_z(64, model.z_dim)})[1:]
+                                model.z: ModelWgan.sample_z(32, model.z_dim)})[1:]
           G_records = sess.run([G_solver] + model.G_train_summaries,
                                {dataset.handle: train_handle,
-                                model.z: ModelWgan.sample_z(64, model.z_dim)})[1:]
+                                model.z: ModelWgan.sample_z(32, model.z_dim)})[1:]
  
           record_summaries(iteration, D_records, D_train_file)
           record_summaries(iteration, G_records, G_train_file)
@@ -159,7 +161,6 @@ def train(sess, dataset, model, optimizer_fn, training_len, output_dir,
           break
 
   # Run the training loop.
-  import pdb; pdb.set_trace()
   training_loop()
 
   # Clean up.

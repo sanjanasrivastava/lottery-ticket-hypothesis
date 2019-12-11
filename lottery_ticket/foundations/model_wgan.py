@@ -49,7 +49,7 @@ class ModelWgan(model_base.ModelBase):
     super(ModelWgan, self).__init__(presets=presets, masks=masks)
 
     # Define dimensions
-    mb_size = 64
+    mb_size = 32
     X_dim, h_dim = 784, 128
     self.z_dim = 10
     lam = 10
